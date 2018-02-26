@@ -1,79 +1,69 @@
 import React from 'react'
 
-export default class extends React.Component {
-	constructor(props){
-		super(props)
-		this.state = { loading: false }
-		this.hideLoader = this.hideLoader.bind(this)
-		this.showLoader = this.showLoader.bind(this)
-		this.startTimeout = this.startTimeout.bind(this)
+function getPadding(option){
+	if(option.indexOf(`%`) > -1){
+		return option
 	}
-	componentWillReceiveProps() {
-		this.startTimeout()
+	if(option === `widescreen`){
+		return `56.25%`
 	}
-	componentDidMount() {
-		if (this.img.complete) {
-			this.hideLoader()
-		}
-		else {
-			this.startTimeout()
-		}
+	if(option === `standard`){
+		return `75%`
 	}
-	startTimeout() {
-		clearTimeout(this.timeout)
-		this.timeout = setTimeout(this.showLoader, 100)
+	if(option.indexOf(`:`) > -1){
+		option = option.split(`:`)
+		option = option[1] / option[0]
+		option = option * 100
+		return `${option}%`
 	}
-	showLoader() {
-		if (!this.img.complete) {
-			this.setState({ loading: true })
-		}
+	return option
+}
+function getId(str){
+	str = str.split(`/`)
+	str = str.pop()
+	if (str.indexOf(`?v=`) > -1){
+		str = str.split(`?v=`)[1]
 	}
-	hideLoader() {
-		clearTimeout(this.timeout)
-		this.setState({ loading: false })
-	}
+	str = str.split(`?`)[0]
+	str = str.split(`&`)[0]
+	return str
+}
+
+
+class YouTubeEmbed extends React.Component {
 	render(){
-		const TagName = this.props.tagName || 'img'
+		const embedLink = this.props.prependSrc + getId(this.props.id) + this.props.appendSrc
 		return (
 			<div style={{
-				maxWidth: this.props.width,
-				maxHeight: this.props.height,
-				margin: this.props.center ? 'auto' : ''
+				position: `relative`,
+				paddingBottom: getPadding(this.props.aspectRatio),
+				width: `100%`,
+				height: 0,
 			}}>
-				<div style={{
-					position: 'relative',
-					paddingBottom: `${(this.props.height / this.props.width) * 100}%`
-				}}>
-					<TagName
-						type={this.props.type}
-						srcSet={this.props.srcSet}
-						sizes={this.props.sizes}
-						src={this.props.src}
-						ref={img => this.img = img}
-						onLoad={this.hideLoader}
-						onError={this.hideLoader}
-						alt={this.props.alt}
-						style={{
-							position: 'absolute',
-							width: '100%',
-							maxWidth: '100%',
-							top: 0,
-							left: 0,
-							display: this.state.loading ? 'none' : 'block'
-						}}
+				<iframe
+					width={this.props.width}
+					height={this.props.width}
+					src={embedLink}
+					frameBorder='0'
+					allow='autoplay; encrypted-media'
+					allowFullScreen
+					style={{
+						position: `absolute`,
+						top: 0,
+						left: 0,
+						width: `100%`,
+						height: `100%`,
+					}}
 					/>
-					{this.state.loading && this.props.loading &&
-						<div style={{
-								position: 'absolute',
-								top: '50%',
-								left: '50%',
-								transform: 'translate(-50%, -50%)'
-						}}>
-							{this.props.loading}
-						</div>
-					}
-				</div>
 			</div>
 		)
 	}
 }
+
+YouTubeEmbed.defaultProps = {
+	aspectRatio: `56.25%`,
+	prependSrc: `https://www.youtube.com/embed/`,
+	appendSrc: ``,
+}
+
+export default YouTubeEmbed

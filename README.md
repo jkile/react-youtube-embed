@@ -1,18 +1,33 @@
-# React Component Boilerplate
+# react-youtube-embed
 
-A simple React boilerplate that outputs to ES5 and ES6.
+A responsive YouTube embed component for React.
 
-## Getting started
+## Install
+
+With npm:
 
 ```bash
-git clone git@github.com:escaladesports/react-component-boilerplate.git --depth=1 your-component
-cd your-component
-rm -rf .git
+npm install --save react-youtube-embed
 ```
 
-Also make sure to edit the `package.json` file with a new name, version number, author, and anything else you might need.
+With Yarn:
+
+```bash
+yarn add react-youtube-embed
+```
 
 ## Usage
 
-- `yarn dev`: Runs a local dev server from the `dev` directory
-- `yarn analyze`: View bundle sizes
+```jsx
+import YouTube from 'react-youtube-embed'
+
+...
+
+<YouTube id='A71aqufiNtQ' />
+```
+
+## Options
+
+- `aspectRatio`: Set an aspect ratio or percentage. Default: `"16:9"`
+- `prependSrc`: Prepends a string to the embed URL (before the YouTube ID). Default: `"https://www.youtube.com/embed/"`
+- `appendSrc`: Appends a string to the embed URL. Default: `""`

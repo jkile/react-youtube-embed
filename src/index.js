@@ -18,6 +18,7 @@ function getPadding(option){
 	}
 	return option
 }
+
 function getId(str){
 	str = str.split(`/`)
 	str = str.pop()
@@ -29,20 +30,23 @@ function getId(str){
 	return str
 }
 
-
 class YouTubeEmbed extends React.Component {
 	render(){
-		const embedLink = this.props.prependSrc + getId(this.props.id) + this.props.appendSrc
+		const { appendSrc, aspectRatio, id, prependSrc, width, ...props} = this.props;
+		const embedLink = prependSrc + getId(id) + appendSrc
 		return (
-			<div style={{
-				position: `relative`,
-				paddingBottom: getPadding(this.props.aspectRatio),
-				width: `100%`,
-				height: 0,
-			}}>
+			<div 
+				style={{
+					position: `relative`,
+					paddingBottom: getPadding(aspectRatio),
+					width: `100%`,
+					height: 0,
+				}}
+				{...props}
+			>
 				<iframe
-					width={this.props.width}
-					height={this.props.width}
+					width={width}
+					height={width}
 					src={embedLink}
 					frameBorder='0'
 					allow='autoplay; encrypted-media'

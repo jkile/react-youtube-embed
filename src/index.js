@@ -48,6 +48,12 @@ class YouTubeEmbed extends React.Component {
 					width={width}
 					height={width}
 					src={embedLink}
+					srcdoc= {`<style>*{padding:0;margin:0;overflow:hidden}
+					html,body{height:100%}
+					img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}
+					span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black}
+					</style><a href=https://www.youtube.com/embed/${embedLink}>
+					<img src=https://i.ytimg.com/vi/${embedLink}/maxresdefault.jpg alt="" /><span>▶</span></a>`}
 					frameBorder='0'
 					allow='autoplay; encrypted-media'
 					allowFullScreen
@@ -66,7 +72,7 @@ class YouTubeEmbed extends React.Component {
 
 YouTubeEmbed.defaultProps = {
 	aspectRatio: `56.25%`,
-	prependSrc: `https://www.youtube.com/embed/`,
+	prependSrc: ``,
 	appendSrc: ``,
 }
 
